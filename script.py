@@ -1,4 +1,3 @@
-
 from register_authenticate import Register_Authenticate
 
 class Script():

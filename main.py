@@ -1,7 +1,10 @@
 
-from script import Script
+from manager import Manager
 
 # Ejemplo de uso
 if __name__ == "__main__":
-    script = Script()
-    script.run()
+    app = Manager()
+    # Ajustamos el tamaño
+    app.geometry("400x550")
+    # La actualizamos permanentemente
+    app.mainloop()

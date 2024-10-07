@@ -1,0 +1,4 @@
+
+BACKGROUND1 = "lightgray"
+BACKGROUND2 = "#084050"
+BACKGROUND3 = "blue"
