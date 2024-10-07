@@ -3,7 +3,7 @@ import tkinter as tk
 from screens import Home, InicioSesion, Registro
 from register_authenticate import Register_Authenticate
 
-class Manager(tk.Tk):
+class App(tk.Tk):
     """ Clase generadora de la interfaz """
     def __init__(self, *args, **kwargs):
         """ Método constructor de la clase. Hereda de la clase tk.Tk """
@@ -23,5 +23,16 @@ class Manager(tk.Tk):
         self.show_frame(Home)
 
     def show_frame(self, container):
+        """ Muestra la pantalla seleccionada y limpia los campos de entrada si es necesario """
+        # Limpiar campos de entrada en Registro antes de cambiar de pantalla
+        if container == Registro:
+            frame_registro = self.frames[Registro]
+            frame_registro.username_entry.delete(0, tk.END)  # Borra el campo de nombre de usuario
+            frame_registro.password_entry.delete(0, tk.END)  # Borra el campo de contraseña
+        if container == InicioSesion:
+            frame_registro = self.frames[InicioSesion]
+            frame_registro.username_entry.delete(0, tk.END)  # Borra el campo de nombre de usuario
+            frame_registro.password_entry.delete(0, tk.END)  # Borra el campo de contraseña
+        # Mostrar la nueva pantalla
         frame = self.frames[container]
         frame.tkraise()

@@ -1,5 +1,5 @@
-
 import json
+from key import Key
 
 class Register_Authenticate():
     def __init__(self):
@@ -12,7 +12,7 @@ class Register_Authenticate():
         try:
             with open(self.filename, 'x') as file:
                 # Creamos el JSON y le añadimos una lista vacía
-                json.dump([], file)
+                json.dump([], file, indent=4, sort_keys=True)
         # Si el archivo existe, no hacemos nada
         except FileExistsError:
             pass
@@ -25,12 +25,13 @@ class Register_Authenticate():
     def guardar_usuarios_registrados(self, lista):
         """Vuelca el contenido pasado por parámetro en el archivo JSON"""
         with open(self.filename, 'w') as file:
-            json.dump(lista, file)
-        print("\nUsuario registrado exitosamente.")
+            json.dump(lista, file, indent=4, sort_keys=True)
 
     def crear_usuario(self, username, password):
         """Devuelve un diccionario con el nuevo registro del usuario"""
-        return {'nombre_usuario': username, 'contrasena': password}
+        key = Key(password)
+        salt, key = key.derivate_key()
+        return {'nombre_usuario':username, 'salt':str(salt), 'key':str(key)}
 
     def registrar_usuario(self, username, password):
         """Comprueba si el usuario entrante no está registrado, y añade sus datos en el archivo JSON"""
@@ -39,13 +40,13 @@ class Register_Authenticate():
         # Verificamos si el usuario ya existe
         for user in registro:
             if user['nombre_usuario'] == username:
-                print(f"\nEl nombre de usuario {username} ya está en uso.")
                 return False
         # Creamos el nuevo usuario registrado
         usuario = self.crear_usuario(username, password)
         registro.append(usuario)
         # Guardamos los datos actualizados en el archivo JSON
         self.guardar_usuarios_registrados(registro)
+        return True
 
     def autenticar_usuario(self, username, password):
         """Comprueba si el usuario entrante está registrado, y compara las contraseñas para darle
@@ -57,11 +58,7 @@ class Register_Authenticate():
             if user['nombre_usuario'] == username:
                 # Comparamos las contraseñas
                 if user['contrasena'] == password:
-                    print(f"\nAcceso concedido.")
                     return True
                 else:
-                    print("\nContraseña incorrecta.")
                     return False
-        print(f"\nEl usuario {username} no está registrado.")
         return False
-

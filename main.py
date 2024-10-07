@@ -1,10 +1,10 @@
 
-from manager import Manager
+from app import App
 
 # Ejemplo de uso
 if __name__ == "__main__":
-    app = Manager()
+    app = App()
     # Ajustamos el tamaño
-    app.geometry("400x550")
+    app.geometry("400x400")
     # La actualizamos permanentemente
     app.mainloop()

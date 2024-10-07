@@ -1,1 +1,7 @@
-[{"nombre_usuario": "javier", "contrasena": "rosales"}]
+[
+    {
+        "key": "b'3o\\x12\\xfd1>\\xef@\\xaf\\x0f&\\xd0A\\xe5\\x82\\xe8\\xfa\\x87\\r\\xa9fr\\x9aI;\\x88[\\x84:\\xb6\\xcc\\xd2'",
+        "nombre_usuario": "javier",
+        "salt": "b'E\\x1a4\\xeb5I52X-\\xb2x\\x86\\x8f\\xa4\\r'"
+    }
+]
