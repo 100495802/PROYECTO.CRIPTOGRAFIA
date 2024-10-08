@@ -23,5 +23,23 @@ class Key():
     def authenticate(self, user:dict):
         salt_json = user["salt"]
         key_json = user["key"]
-        kdf = Scrypt(salt=salt_json, length=32, n=2 ** 14, r=8, p=1)
-        kdf.verify(self.encoded_password(), key_json)
+        # Convierte a bytes si son cadenas
+        if isinstance(salt_json, str):
+            salt = salt_json.encode()  # Convertimos el salt a bytes
+        else:
+            salt = salt_json  # Si ya es bytes, lo dejamos tal cual
+        if isinstance(key_json, str):
+            key = key_json.encode()  # Convertimos la clave a bytes
+        else:
+            key = key_json  # Si ya es bytes, lo dejamos tal cual
+        kdf = Scrypt(salt=salt, length=32, n=2 ** 14, r=8, p=1)
+        # Asegúrate de que la contraseña derivada esté en formato bytes
+        derived_password = self.encode_password()
+        if isinstance(derived_password, str):
+            derived_password = derived_password.encode()
+        # Verificación de la clave
+        try:
+            kdf.verify(derived_password, key)
+            return True
+        except Exception as e:
+            return False

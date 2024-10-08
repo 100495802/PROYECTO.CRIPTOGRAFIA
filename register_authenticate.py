@@ -56,9 +56,17 @@ class Register_Authenticate():
         # Verificamos si el usuario existe
         for user in registro:
             if user['nombre_usuario'] == username:
-                # Comparamos las contraseñas
-                if user['contrasena'] == password:
-                    return True
-                else:
-                    return False
+                key = Key(password)
+                return key.authenticate(user)
         return False
+
+    """def autenticar_usuario(self, username, password):
+    user = self.get_user_by_username(username)  # Asumimos que recupera el usuario por nombre
+    if user is None:
+        return False
+
+    # Ahora intentamos autenticar usando la clase Key
+    key = Key(password)  # Pasamos la contraseña ingresada
+    if key.authenticate(user):
+        return True
+    return False"""

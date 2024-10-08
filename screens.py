@@ -76,7 +76,6 @@ class InicioSesion(tk.Frame):
         """ Método para iniciar sesión """
         username = self.username_entry.get()
         password = self.password_entry.get()
-
         if self.user_manager.autenticar_usuario(username, password):
             messagebox.showinfo("Éxito", f"¡Bienvenido {username}!")
             # Aquí puedes redirigir a otra pantalla o realizar otras acciones
