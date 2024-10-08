@@ -25,11 +25,11 @@ class Key():
         key_json = user["key"]
         # Convierte a bytes si son cadenas
         if isinstance(salt_json, str):
-            salt = salt_json.encode()  # Convertimos el salt a bytes
+            salt = base64.b64decode(salt_json)  # Convertimos el salt a bytes
         else:
             salt = salt_json  # Si ya es bytes, lo dejamos tal cual
         if isinstance(key_json, str):
-            key = key_json.encode()  # Convertimos la clave a bytes
+            key = base64.b64decode(key_json)  # Convertimos la clave a bytes
         else:
             key = key_json  # Si ya es bytes, lo dejamos tal cual
         kdf = Scrypt(salt=salt, length=32, n=2 ** 14, r=8, p=1)

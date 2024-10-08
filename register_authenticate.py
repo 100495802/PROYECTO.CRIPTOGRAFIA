@@ -1,3 +1,4 @@
+import base64
 import json
 from key import Key
 
@@ -31,7 +32,15 @@ class Register_Authenticate():
         """Devuelve un diccionario con el nuevo registro del usuario"""
         key = Key(password)
         salt, key = key.derivate_key()
-        return {'nombre_usuario':username, 'salt':str(salt), 'key':str(key)}
+        key = Key(password)
+        salt, key = key.derivate_key()
+
+        # Codificar salt y key en Base64 antes de almacenarlos
+
+        key_base64 = base64.b64encode(key).decode('utf-8')
+        salt_base64 = base64.b64encode(salt).decode('utf-8')
+
+        return {'nombre_usuario':username, 'salt':salt_base64, 'key':key_base64}
 
     def registrar_usuario(self, username, password):
         """Comprueba si el usuario entrante no está registrado, y añade sus datos en el archivo JSON"""
@@ -59,14 +68,3 @@ class Register_Authenticate():
                 key = Key(password)
                 return key.authenticate(user)
         return False
-
-    """def autenticar_usuario(self, username, password):
-    user = self.get_user_by_username(username)  # Asumimos que recupera el usuario por nombre
-    if user is None:
-        return False
-
-    # Ahora intentamos autenticar usando la clase Key
-    key = Key(password)  # Pasamos la contraseña ingresada
-    if key.authenticate(user):
-        return True
-    return False"""
