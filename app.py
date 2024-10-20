@@ -1,5 +1,6 @@
 
 import tkinter as tk
+
 from screens import Home, InicioSesion, Registro
 from register_authenticate import Register_Authenticate
 
@@ -8,7 +9,8 @@ class App(tk.Tk):
     def __init__(self, *args, **kwargs):
         """ Método constructor de la clase. Hereda de la clase tk.Tk """
         super().__init__(*args, **kwargs)
-        self.title("Manuel putero")
+        # Título de la ventana
+        self.title("MyDiary.com")
         self.user_manager = Register_Authenticate()
         # Contenedor principal
         container = tk.Frame(self)
@@ -24,15 +26,15 @@ class App(tk.Tk):
 
     def show_frame(self, container):
         """ Muestra la pantalla seleccionada y limpia los campos de entrada si es necesario """
-        # Limpiar campos de entrada en Registro antes de cambiar de pantalla
+        # Limpiamos campos de entrada en Registro antes de cambiar de pantalla
         if container == Registro:
             frame_registro = self.frames[Registro]
-            frame_registro.username_entry.delete(0, tk.END)  # Borra el campo de nombre de usuario
-            frame_registro.password_entry.delete(0, tk.END)  # Borra el campo de contraseña
+            frame_registro.username_entry.delete(0, tk.END)
+            frame_registro.password_entry.delete(0, tk.END)
         if container == InicioSesion:
             frame_registro = self.frames[InicioSesion]
-            frame_registro.username_entry.delete(0, tk.END)  # Borra el campo de nombre de usuario
-            frame_registro.password_entry.delete(0, tk.END)  # Borra el campo de contraseña
-        # Mostrar la nueva pantalla
+            frame_registro.username_entry.delete(0, tk.END)
+            frame_registro.password_entry.delete(0, tk.END)
+        # Mostramos la nueva pantalla
         frame = self.frames[container]
         frame.tkraise()

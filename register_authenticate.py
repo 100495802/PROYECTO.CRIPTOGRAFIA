@@ -1,5 +1,9 @@
+
 import base64
 import json
+import re
+
+from constants import CARACTERES_ESPECIALES
 from key import Key
 
 class Register_Authenticate():
@@ -34,19 +38,35 @@ class Register_Authenticate():
         salt, key = key.derivate_key()
         key = Key(password)
         salt, key = key.derivate_key()
-
         # Codificar salt y key en Base64 antes de almacenarlos
-
         key_base64 = base64.b64encode(key).decode('utf-8')
         salt_base64 = base64.b64encode(salt).decode('utf-8')
-
         return {'nombre_usuario':username, 'salt':salt_base64, 'key':key_base64}
+
+    def comprobar_formato_contraseña(self, password):
+        """Devuelve 0 si el formato de la contraseña es correcto; y un número negativo en función
+        del error correspondiente. Establecemos como formato correcto una contraseña que contenga
+        mínimo 8 caracteres, de los cuales se incluyan al menos una mayúscula, un número y un
+        carácter especial"""
+        # Verificar si el tamaño es correcto
+        if len(password) < 8:
+            return False
+        # Verificar si contiene al menos una mayúscula
+        if not re.search(r'[A-Z]', password):
+            return False
+        # Verificar si contiene al menos un número
+        if not re.search(r'[0-9]', password):
+            return False
+        # Verificar si contiene al menos un carácter especial
+        if not re.search(r'[{}]'.format(re.escape(CARACTERES_ESPECIALES)), password):
+            return False
+        return True
 
     def registrar_usuario(self, username, password):
         """Comprueba si el usuario entrante no está registrado, y añade sus datos en el archivo JSON"""
         # Actualizamos el registro de usuarios
         registro = self.obtener_usuarios_registrados()
-        # Verificamos si el usuario ya existe
+        # Verificamos si el nombre de usuario no se repite
         for user in registro:
             if user['nombre_usuario'] == username:
                 return False
