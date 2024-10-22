@@ -338,14 +338,14 @@ class BlocNotas(tk.Frame):
             orient="vertical",
             command=self.canvas.yview
         )
-        self.scrollable_frame = tk.Frame(
-            self.canvas,
-            bg=constants.BACKGROUND
-        )
+        # Frame scrollable
+        self.scrollable_frame = tk.Frame(self.canvas, bg=constants.BACKGROUND)
         # Configurar el canvas
         self.scrollable_frame.bind("<Configure>", lambda e: self.canvas.configure(scrollregion=self.canvas.bbox("all")))
-        self.canvas.create_window((0, 0), window=self.scrollable_frame, anchor="nw")
+        # Calcular el ancho del canvas y centrar el scrollable_frame
+        self.canvas.create_window((self.canvas.winfo_width() // 2, 0), window=self.scrollable_frame, anchor="n")
         self.canvas.configure(yscrollcommand=self.scrollbar.set)
+        # Empaquetar el canvas y la barra de desplazamiento
         self.canvas.pack(side=tk.LEFT, fill=tk.BOTH, expand=True)
         self.scrollbar.pack(side=tk.RIGHT, fill=tk.Y)
         # Botones
@@ -430,12 +430,32 @@ class BlocNotas(tk.Frame):
             messagebox.showwarning("Advertencia", "El título y el contenido no pueden estar vacíos.")
 
     def mostrar_notas(self):
-        pass
+        """Muestra cada nota en la pantalla"""
+        # Limpiar el contenido previo en el frame de notas
+        for widget in self.scrollable_frame.winfo_children():
+            widget.destroy()
+        # Mostrar cada nota en el frame
+        for nota in self.notas:
+            # Crear el frame de la nota, llenando el ancho disponible
+            nota_frame = tk.Frame(self.scrollable_frame, bg=nota["background"], padx=159, pady=10)
+            nota_frame.pack(pady=5, fill=tk.X, expand=True)
+            # Título de la nota
+            titulo_label = tk.Label(nota_frame, text=nota["titulo"], bg=nota["background"], font=("Arial", 14))
+            titulo_label.pack(fill=tk.X)
+            # Contenido de la nota
+            contenido_label = tk.Label(nota_frame, text=nota["contenido"], bg=nota["background"],
+                                       justify=tk.LEFT)
+            contenido_label.pack(fill=tk.X)
+            # Fecha de la nota
+            fecha_label = tk.Label(nota_frame, text=nota["fecha"], bg=nota["background"], font=("Arial", 8))
+            fecha_label.pack(fill=tk.X)
+            # Hora de la nota
+            hora_label = tk.Label(nota_frame, text=nota["hora"], bg=nota["background"], font=("Arial", 8))
+            hora_label.pack(fill=tk.X)
 
     def cerrar_sesion(self):
         messagebox.showinfo("Sesión", "Sesión cerrada exitósamente")
         self.controller.show_frame(Home)
-
 
 # Pantalla NotaAbierta (pantalla de notas)
 class NotaAbierta(tk.Frame):

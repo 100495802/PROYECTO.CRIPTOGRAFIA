@@ -11,7 +11,7 @@ class App(tk.Tk):
         # Título de la ventana
         self.title("MyDiary.com")
         # Deshabilitamos el redimensionamiento
-        # self.resizable(False, False)
+        self.resizable(False, False)
         # Inicializamos una instancia para el registro del usuario
         self.user_manager = Register_Authenticate()
         # Creamos un contenedor principal para la interfaz
