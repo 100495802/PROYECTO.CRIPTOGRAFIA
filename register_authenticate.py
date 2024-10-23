@@ -7,6 +7,8 @@ import base64
 import json
 import re
 
+from pathlib import Path
+
 from constants import CARACTERES_ESPECIALES
 from key import Key
 
@@ -15,6 +17,7 @@ class Register_Authenticate():
         # Inicializamos el fichero de almacenamiento de usuarios
         self.filename = "usuarios.json"
         self.inicializar_json()
+        self.crear_directorio()
 
     def inicializar_json(self):
         """Crea el archivo JSON con la información de los usuarios registrados"""
@@ -26,6 +29,12 @@ class Register_Authenticate():
         # Si el archivo existe, no hacemos nada
         except FileExistsError:
             pass
+
+    def crear_directorio(self):
+        """Crea el directorio notes para almacenar las notas si no existe"""
+        notes_dir = Path('notes')
+        if not notes_dir.exists():
+            notes_dir.mkdir()
 
     def obtener_usuarios_registrados(self):
         """Actualiza el registro volcando el contenido del JSON"""
