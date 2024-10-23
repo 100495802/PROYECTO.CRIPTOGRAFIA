@@ -434,24 +434,30 @@ class BlocNotas(tk.Frame):
         # Limpiar el contenido previo en el frame de notas
         for widget in self.scrollable_frame.winfo_children():
             widget.destroy()
+
         # Mostrar cada nota en el frame
-        for nota in self.notas:
-            # Crear el frame de la nota, llenando el ancho disponible
-            nota_frame = tk.Frame(self.scrollable_frame, bg=nota["background"], padx=159, pady=10)
-            nota_frame.pack(pady=5, fill=tk.X, expand=True)
+        for idx, nota in enumerate(self.notas):
+            # Crear el frame de la nota con grid
+            nota_frame = tk.Frame(self.scrollable_frame, bg=nota["background"], padx=10, pady=10)
+            nota_frame.grid(row=idx, column=0, padx=5, pady=5, sticky="nsew")
             # Título de la nota
-            titulo_label = tk.Label(nota_frame, text=nota["titulo"], bg=nota["background"], font=("Arial", 14))
-            titulo_label.pack(fill=tk.X)
+            titulo_label = tk.Label(nota_frame, text=nota["titulo"], bg=nota["background"], font=("Arial", 14),
+                                    wraplength=350, justify="center", anchor="center")
+            titulo_label.grid(row=0, column=0, columnspan=2, sticky="ew", pady=(0, 5))
             # Contenido de la nota
-            contenido_label = tk.Label(nota_frame, text=nota["contenido"], bg=nota["background"],
-                                       justify=tk.LEFT)
-            contenido_label.pack(fill=tk.X)
+            contenido_label = tk.Label(nota_frame, text=nota["contenido"], bg=nota["background"], wraplength=350,
+                                       justify="center", anchor="center")
+            contenido_label.grid(row=1, column=0, columnspan=2, sticky="ew", pady=(0, 5))
             # Fecha de la nota
-            fecha_label = tk.Label(nota_frame, text=nota["fecha"], bg=nota["background"], font=("Arial", 8))
-            fecha_label.pack(fill=tk.X)
+            fecha_label = tk.Label(nota_frame, text=nota["fecha"], bg=nota["background"], font=("Arial", 8),
+                                   anchor="center")
+            fecha_label.grid(row=2, column=0, sticky="nsew")
             # Hora de la nota
-            hora_label = tk.Label(nota_frame, text=nota["hora"], bg=nota["background"], font=("Arial", 8))
-            hora_label.pack(fill=tk.X)
+            hora_label = tk.Label(nota_frame, text=nota["hora"], bg=nota["background"], font=("Arial", 8),
+                                  anchor="center")
+            hora_label.grid(row=2, column=1, sticky="nsew")
+            nota_frame.grid_columnconfigure(0, weight=1)
+            nota_frame.grid_columnconfigure(1, weight=1)
 
     def cerrar_sesion(self):
         messagebox.showinfo("Sesión", "Sesión cerrada exitósamente")
