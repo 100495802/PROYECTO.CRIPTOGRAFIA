@@ -1,4 +1,8 @@
 
+"""
+Modulo que maneja la app (manager de Tkinter)
+"""
+
 import tkinter as tk
 from screens import Home, InicioSesion, Registro, BlocNotas
 from register_authenticate import Register_Authenticate

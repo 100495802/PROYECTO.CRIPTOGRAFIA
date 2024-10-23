@@ -1,9 +1,14 @@
 
+"""
+Módulo que maneja la lógica de las notas
+"""
+
 import random
 from datetime import datetime
 
 class Nota():
     def __init__(self, titulo, contenido):
+        # Declaramos los atributos de la nota
         self.titulo = titulo
         self.contenido = contenido
         self.fecha = datetime.now().strftime("%Y-%m-%d")
@@ -11,7 +16,7 @@ class Nota():
         self.background = self.generar_color_fondo()
 
     def formato_json(self):
-        """Devuelve una instancia de un elemento JSON"""
+        """Devuelve una instancia de la nota en formato JSON"""
         return {
             "titulo": self.titulo,
             "contenido": self.contenido,

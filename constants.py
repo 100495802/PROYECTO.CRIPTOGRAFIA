@@ -1,4 +1,8 @@
 
+"""
+Modulo de constantes
+"""
+
 import string
 
 # Color de fondo

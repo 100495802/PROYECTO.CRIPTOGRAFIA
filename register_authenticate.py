@@ -1,4 +1,8 @@
 
+"""
+Modulo register_authenticate para la clase Register_Authenticate
+"""
+
 import base64
 import json
 import re
@@ -8,6 +12,7 @@ from key import Key
 
 class Register_Authenticate():
     def __init__(self):
+        # Inicializamos el fichero de almacenamiento de usuarios
         self.filename = "usuarios.json"
         self.inicializar_json()
 

@@ -1,4 +1,8 @@
 
+"""
+Modulo main para la ejecución de la app
+"""
+
 from app import App
 
 # Ejemplo de uso
