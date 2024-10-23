@@ -463,7 +463,10 @@ class BlocNotas(tk.Frame):
         messagebox.showinfo("Sesión", "Sesión cerrada exitósamente")
         self.controller.show_frame(Home)
 
+
+
 # Pantalla NotaAbierta (pantalla de notas)
+# Futura implementación
 class NotaAbierta(tk.Frame):
     def __init__(self, parent, controller, nota):
         super().__init__(parent)
@@ -475,7 +478,7 @@ class NotaAbierta(tk.Frame):
         pass
 
     def editar_nota(self):
-        """ Edita el contenido de la nota """
+        """Edita el contenido de la nota"""
 
     def eliminar_nota(self):
-        """ Elimina la nota y regresa a la lista de notas """
+        """Elimina la nota y regresa a la lista de notas"""

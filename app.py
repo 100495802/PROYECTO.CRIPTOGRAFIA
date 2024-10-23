@@ -6,11 +6,11 @@ from register_authenticate import Register_Authenticate
 class App(tk.Tk):
     """Clase generadora de la interfaz"""
     def __init__(self, *args, **kwargs):
-        """Método constructor de la clase. Hereda de la clase tk.Tk"""
+        """Método constructor de la clase; hereda de la clase tk.Tk"""
         super().__init__(*args, **kwargs)
         # Título de la ventana
         self.title("MyDiary.com")
-        # Deshabilitamos el redimensionamiento
+        # Deshabilitamos el redimensionamiento de la ventana
         self.resizable(False, False)
         # Inicializamos una instancia para el registro del usuario
         self.user_manager = Register_Authenticate()

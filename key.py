@@ -31,7 +31,7 @@ class Key():
             key = base64.b64decode(key_json)
         else:
             key = key_json
-        # Preparamos el KDF con el salt almacenado
+        # Preparamos el KDF con el salt almacenado (longitud de 32 bytes)
         kdf = Scrypt(salt=salt, length=32, n=2 ** 14, r=8, p=1)
         # Verificamos la contraseña, que debe estar en bytes
         try:

@@ -12,7 +12,7 @@ class Register_Authenticate():
         self.inicializar_json()
 
     def inicializar_json(self):
-        """ Crea el archivo JSON con la información de los usuarios registrados. """
+        """Crea el archivo JSON con la información de los usuarios registrados"""
         # Comprobamos que el JSON no esté creado
         try:
             with open(self.filename, 'x') as file:
@@ -23,7 +23,7 @@ class Register_Authenticate():
             pass
 
     def obtener_usuarios_registrados(self):
-        """ Actualiza el registro volcando el contenido del JSON """
+        """Actualiza el registro volcando el contenido del JSON"""
         with open(self.filename, 'r') as file:
             return json.load(file)
 
@@ -34,13 +34,14 @@ class Register_Authenticate():
 
     def crear_usuario(self, username, password):
         """Devuelve un diccionario con el nuevo registro del usuario"""
+        # Obtenemos una clave de cifrado a partir de la contraseña
         key = Key(password)
+        # Obtenemos el salt
         salt, key = key.derivate_key()
-        key = Key(password)
-        salt, key = key.derivate_key()
-        # Codificar salt y key en Base64 antes de almacenarlos
+        # Codificamos salt y key en Base64
         key_base64 = base64.b64encode(key).decode('utf-8')
         salt_base64 = base64.b64encode(salt).decode('utf-8')
+        # Devolvemos un diccionario para serializarlo a JSON
         return {'nombre_usuario':username, 'salt':salt_base64, 'key':key_base64}
 
     def comprobar_formato_contraseña(self, password):
