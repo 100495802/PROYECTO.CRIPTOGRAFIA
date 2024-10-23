@@ -34,15 +34,15 @@ class Register_Authenticate():
 
     def crear_usuario(self, username, password):
         """Devuelve un diccionario con el nuevo registro del usuario"""
-        # Obtenemos una clave de cifrado a partir de la contraseña
-        key = Key(password)
+        # Obtenemos el password_token a partir de la contraseña
+        pwdtoken_instance = Key(password)
         # Obtenemos el salt
-        salt, key = key.derivate_key()
+        salt, pwd_token = pwdtoken_instance.derivate_pwdtoken()
         # Codificamos salt y key en Base64
-        key_base64 = base64.b64encode(key).decode('utf-8')
+        pwdtoken_base64 = base64.b64encode(pwd_token).decode('utf-8')
         salt_base64 = base64.b64encode(salt).decode('utf-8')
         # Devolvemos un diccionario para serializarlo a JSON
-        return {'nombre_usuario':username, 'salt':salt_base64, 'key':key_base64}
+        return {'nombre_usuario':username, 'salt_pwd':salt_base64, 'pwd_token':pwdtoken_base64}
 
     def comprobar_formato_contraseña(self, password):
         """Devuelve 0 si el formato de la contraseña es correcto; y un número negativo en función

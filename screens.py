@@ -4,10 +4,9 @@ import constants
 import tkinter as tk
 
 from pathlib import Path
-from datetime import datetime
-from tkinter import font as tkfont
 from tkinter import simpledialog, messagebox
 
+from aes import AES
 from note import Nota
 from register_authenticate import Register_Authenticate
 
@@ -299,19 +298,20 @@ class InicioSesion(tk.Frame):
         password = self.password_entry.get()
         if self.user_manager.autenticar_usuario(username, password):
             messagebox.showinfo("Éxito", f"¡Bienvenido/a {username.upper()}!")
-            self.controller.show_frame(BlocNotas, username)
+            self.controller.show_frame(BlocNotas, username, password)
         else:
             messagebox.showerror("Error", "Acceso denegado. Nombre de usuario o contraseña incorrectos.")
 
 class BlocNotas(tk.Frame):
-    def __init__(self, parent, controller, username):
+    def __init__(self, parent, controller, username, password):
         super().__init__(parent)
         self.configure(background=constants.BACKGROUND)
         self.controller = controller
         self.username = username
+        self.aes = AES(username, password)
         self.file = f"notes/{self.username}.json"
         self.notas = []
-        self.cargar_registro_notas()
+        self.cargar_notas()
         self.init_widgets()
 
     def init_widgets(self):
@@ -373,19 +373,18 @@ class BlocNotas(tk.Frame):
             bd=0
         )
         btn_cerrar_sesion.grid(row=0, column=1, padx=10)
-        # Mostrar las notas cargadas
+        # Mostramos las notas
         self.mostrar_notas()
 
-    def cargar_registro_notas(self):
-        try:
-            with open(self.file, "r", encoding="utf-8") as file:
-                self.notas = json.load(file)
-        except FileNotFoundError:
-            self.notas = []
-
-    def guardar_registro_notas(self):
+    def guardar_notas(self):
+        cifrado = self.aes.encrypt(self.notas)
         with open(self.file, "w", encoding="utf-8") as file:
-            json.dump(self.notas, file, ensure_ascii=False, indent=4)
+            json.dump(cifrado, file, ensure_ascii=False, indent=4)
+
+    def cargar_notas(self):
+        self.notas = self.aes.decrypt()
+        if self.notas is None:
+            self.notas = []
 
     def crear_nota(self):
         # Abrimos una ventana nueva
@@ -403,7 +402,7 @@ class BlocNotas(tk.Frame):
         boton_guardar_nota = tk.Button(
             ventana_nueva_nota,
             text="Guardar Nota",
-            command=lambda: self.guardar_nota(titulo_entry.get(),contenido_text.get("1.0", tk.END),ventana_nueva_nota),
+            command=lambda: self.almacenar_nota(titulo_entry.get(), contenido_text.get("1.0", tk.END), ventana_nueva_nota),
             font = ("Arial", 10),
             bg = constants.BACKGROUND,
             fg = "black",
@@ -412,7 +411,7 @@ class BlocNotas(tk.Frame):
         )
         boton_guardar_nota.pack(pady=10)
 
-    def guardar_nota(self, titulo, contenido, ventana_nueva_nota):
+    def almacenar_nota(self, titulo, contenido, ventana_nueva_nota):
         # Comprobamos que los contenidos de la nota no estén vacíos
         if titulo.strip() and contenido.strip():
             # Creamos la instancia de Nota
@@ -420,7 +419,7 @@ class BlocNotas(tk.Frame):
             # Añadimos la nota en formato json a la lista de notas del usuario
             self.notas.append(nueva_nota.formato_json())
             # Guardamos las notas en el JSON
-            self.guardar_registro_notas()
+            self.guardar_notas()
             # Mostramos las notas por la interfaz
             self.mostrar_notas()
             # Cerramos la ventana de nueva nota

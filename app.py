@@ -29,7 +29,7 @@ class App(tk.Tk):
             frame.grid(row=0, column=0, sticky=tk.NSEW)
         self.show_frame(Home)
 
-    def show_frame(self, container, username=None):
+    def show_frame(self, container, username=None, password=None):
         """Muestra la pantalla seleccionada, limpiando los campos si es necesario,
         y gestionando BlocNotas en función del usuario registrado"""
         # Buscamos la pantalla que vamos a mostrar según el container
@@ -43,17 +43,17 @@ class App(tk.Tk):
             frame_inicio_sesion = self.frames[InicioSesion]
             frame_inicio_sesion.username_entry.delete(0, tk.END)
             frame_inicio_sesion.password_entry.delete(0, tk.END)
-        elif container == BlocNotas and username:
+        elif container == BlocNotas and username and password:
             # Gestionamos la pantalla de BlocNotas en función del usuario
             # Primero verificamos si existe una instancia de BlocNotas para el usuario actual
             if username not in self.frames:
                 # Si no existe, creamos una nueva instancia de BlocNotas para este usuario
-                frame_bloc_notas = BlocNotas(self.frames[InicioSesion].master, self, username)
+                frame_bloc_notas = BlocNotas(self.frames[InicioSesion].master, self, username, password)
                 # Almacenamos la instancia usando el username como clave
                 self.frames[username] = frame_bloc_notas
                 frame_bloc_notas.grid(row=0, column=0, sticky=tk.NSEW)
                 # Cargamos las notas del usuario registrado
-                frame_bloc_notas.cargar_registro_notas()
+                frame_bloc_notas.cargar_notas()
             # En caso de que exista, cambiamos el container al frame específico del usuario
             container = username
         # Mostramos la pantalla solicitada
