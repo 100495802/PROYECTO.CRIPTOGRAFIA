@@ -462,8 +462,6 @@ class BlocNotas(tk.Frame):
         messagebox.showinfo("Sesión", "Sesión cerrada exitósamente")
         self.controller.show_frame(Home)
 
-
-
 # Pantalla NotaAbierta (pantalla de notas)
 # Futura implementación
 class NotaAbierta(tk.Frame):

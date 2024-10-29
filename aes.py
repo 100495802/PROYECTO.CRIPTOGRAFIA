@@ -28,10 +28,12 @@ class AES():
     def encrypt(self, lista_notas):
         """Método de cifrado: devuelve un diccionario serializable a JSON que contiene
         el mensaje cifrado, el nonce, el salt y el tag"""
+        print(f"Datos en claro: {lista_notas}")
         cifrado = Cipher(algorithms.AES(self.key), modes.GCM(self.nonce))
         cifrador = cifrado.encryptor()
         contenido_str = json.dumps(lista_notas)
         texto_cifrado = cifrador.update(contenido_str.encode()) + cifrador.finalize()
+        print(f"Datos cifrados: {texto_cifrado}")
         return {
             "texto_cifrado": base64.b64encode(texto_cifrado).decode('utf-8'),
             "nonce": base64.b64encode(self.nonce).decode('utf-8'),
@@ -45,6 +47,7 @@ class AES():
         datos_decrypt = self.extraer_datos_json()
         if isinstance(datos_decrypt, dict):
             texto_cifrado = base64.b64decode(datos_decrypt['texto_cifrado'])
+            print(f"Datos cifrados: {texto_cifrado}")
             nonce = base64.b64decode(datos_decrypt['nonce'])
             salt = base64.b64decode(datos_decrypt['salt'])
             tag = base64.b64decode(datos_decrypt['tag'])
@@ -53,6 +56,7 @@ class AES():
             key_descifrar = kdf.derive(self.password.encode('utf-8'))
             descifrador = Cipher(algorithms.AES(key_descifrar), modes.GCM(nonce, tag)).decryptor()
             texto_bytes = descifrador.update(texto_cifrado) + descifrador.finalize()
+            print(f"Datos en claro: {texto_bytes.decode('utf-8')}")
             return json.loads(texto_bytes.decode('utf-8'))
         return datos_decrypt
 

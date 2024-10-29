@@ -55,6 +55,7 @@ class Register_Authenticate():
         # Codificamos salt y key en Base64
         pwdtoken_base64 = base64.b64encode(pwd_token).decode('utf-8')
         salt_base64 = base64.b64encode(salt).decode('utf-8')
+        print(f"Usuario registrado como: username={username}, salt_pwd={salt_base64}, pwd_token={pwdtoken_base64}")
         # Devolvemos un diccionario para serializarlo a JSON
         return {'nombre_usuario':username, 'salt_pwd':salt_base64, 'pwd_token':pwdtoken_base64}
 
@@ -90,6 +91,7 @@ class Register_Authenticate():
         registro.append(usuario)
         # Guardamos los datos actualizados en el archivo JSON
         self.guardar_usuarios_registrados(registro)
+        print("Usuario guardado en el JSON")
         return True
 
     def autenticar_usuario(self, username, password):
@@ -101,5 +103,7 @@ class Register_Authenticate():
         for user in registro:
             if user['nombre_usuario'] == username:
                 key = Key(password)
+                print(f"Inicio de sesión del usuario {username} con key={key}")
                 return key.authenticate(user)
+        print("Usuario no encontrado")
         return False
